@@ -16,35 +16,33 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
-Tc001() {
-    WebUI.openBrowser(null)
 
-    WebUI.navigateToUrl('http://192.168.100.186:5173/signin')
+
+	boolean isLoginSuccessful
+	String message
+
+	WebUI.openBrowser(null)
 	
-	GlobalVariable.fileName = "TestReport"
-    CustomKeywords.'excelReporting.Configuration.excelReportings'(
-        GlobalVariable.fileName,
-        findTestObject('Object Repository/Login/input_MASUK_account'),
-        'TC01', '1. Input NIM'
-    )
-    WebUI.setText(findTestObject('Object Repository/Login/input_MASUK_account'), '55201122066')
-
-    CustomKeywords.'excelReporting.Configuration.excelReportings'(
-        GlobalVariable.fileName,
-        findTestObject('Object Repository/Login/input_MASUK_password'),
-        'TC01', '2. Input Password'
-    )
-    WebUI.setEncryptedText(findTestObject('Object Repository/Login/input_MASUK_password'), 'GxKgGrWX2Z7n8zPL97BtEg==')
-
-    CustomKeywords.'excelReporting.Configuration.excelReportings'(
-        GlobalVariable.fileName,
-        findTestObject('Object Repository/Login/button_Masuk eStudy'),
-        'TC01', '3. Klik Tombol Login'
-    )
-    WebUI.click(findTestObject('Object Repository/Login/button_Masuk eStudy'))
-
-    boolean isLoginSuccessful = WebUI.verifyElementPresent(findTestObject('Object Repository/Login/p_Halo MUHAMAD TIGAR PRIATNA,'), 10)
-
-
-    WebUI.closeBrowser()
-}
+	WebUI.navigateToUrl('http://192.168.100.186:5173/signin')
+	
+	isLoginSuccessful =WebUI.setText(findTestObject('Object Repository/Login/input_NPM_npm'), '888')
+	message =  "Masukan Nim "
+	CustomKeywords.'excelReporting.Configuration.writeLoginResult'('TC001',message ,isLoginSuccessful)
+	
+	isLoginSuccessful = WebUI.setText(findTestObject('Object Repository/Login/input_Password_password'), '888')
+	message =  "Masukan Password "
+	CustomKeywords.'excelReporting.Configuration.writeLoginResult'('TC002',message ,isLoginSuccessful)
+	
+	WebUI.click(findTestObject('Object Repository/Login/button_Login'))
+	
+	WebUI.waitForAlert(10)
+	
+	WebUI.acceptAlert()
+	
+	isLoginSuccessful = WebUI.verifyElementPresent(findTestObject('Object Repository/Login/h2_Selamat Datang di Perpustakaan Nurtanio Bandung'),10)
+	message = "Berhasil Click Tombol Login"
+	CustomKeywords.'excelReporting.Configuration.writeLoginResult'('TC003', message, isLoginSuccessful)
+	
+	
+	WebUI.closeBrowser()
+	
